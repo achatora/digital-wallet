@@ -16,5 +16,8 @@ public class Main {
 
     Wallet wallet = new Wallet(20001, customer, Currency.EUR, new BigDecimal("100.00"));
     System.out.println(wallet.getOwner().getName());
+
+    wallet.deposit(new BigDecimal("50.00"));
+    System.out.printf("Deposit success! New wallet balance: %s %.2f%n", wallet.getCurrency(), wallet.getBalance());
   }
 }

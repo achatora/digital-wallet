@@ -3,6 +3,7 @@ package com.alfred.wallet.model;
 import java.math.BigDecimal;
 
 public class Wallet {
+
   private long walletId;
   private Customer owner;
   private Currency currency;
@@ -46,5 +47,16 @@ public class Wallet {
 
   public BigDecimal getBalance() {
     return balance;
+  }
+
+  public void deposit(BigDecimal amount) {
+    if (amount == null) {
+      throw new IllegalArgumentException("amount cannot be null");
+    }
+
+    if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+      throw new IllegalArgumentException("Amount has to be greater than zero");
+    }
+    this.balance = this.balance.add(amount);
   }
 }
