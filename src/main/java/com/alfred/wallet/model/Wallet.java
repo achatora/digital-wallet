@@ -59,4 +59,19 @@ public class Wallet {
     }
     this.balance = this.balance.add(amount);
   }
+
+  public void withdraw(BigDecimal amount) {
+    if (amount == null) {
+      throw new IllegalArgumentException("withdrawal cannot be null");
+    }
+
+    if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+      throw new IllegalArgumentException("withdrawal should be greater than 0");
+    }
+
+    if (amount.compareTo(this.balance) > 0) {
+      throw new IllegalArgumentException("account balance too low, cannot withdraw");
+    }
+    this.balance = this.balance.subtract(amount);
+  }
 }

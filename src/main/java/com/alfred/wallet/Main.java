@@ -19,5 +19,8 @@ public class Main {
 
     wallet.deposit(new BigDecimal("50.00"));
     System.out.printf("Deposit success! New wallet balance: %s %.2f%n", wallet.getCurrency(), wallet.getBalance());
+
+    wallet.withdraw(BigDecimal.ZERO);
+    System.out.printf("Withdrawal success! New wallet balance: %s %.2f%n", wallet.getCurrency(), wallet.getBalance());
   }
 }
