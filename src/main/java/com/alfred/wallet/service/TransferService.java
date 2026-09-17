@@ -30,7 +30,7 @@ public class TransferService {
     if (sender == receiver) {
       throw new IllegalArgumentException("Cannot transfer to the same wallet");
     }
-    sender.withdraw(transferAmount);
-    receiver.deposit(transferAmount);
+    sender.transferOut(transferAmount);
+    receiver.transferIn(transferAmount);
   }
 }

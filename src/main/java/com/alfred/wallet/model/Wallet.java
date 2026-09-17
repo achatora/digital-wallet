@@ -1,5 +1,7 @@
 package com.alfred.wallet.model;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.math.BigDecimal;
 
 public class Wallet {
@@ -8,6 +10,7 @@ public class Wallet {
   private Customer owner;
   private Currency currency;
   private BigDecimal balance;
+  private List<Transaction> transactionHistory;
 
   public Wallet(long walletId, Customer owner, Currency currency, BigDecimal balance) {
     this.walletId = walletId;
@@ -30,9 +33,10 @@ public class Wallet {
       throw new IllegalArgumentException("Balance entered is negative");
     }
     this.balance = balance;
-
+    this.transactionHistory = new ArrayList<>();
   }
 
+  // Getters
   public long getWalletId() {
     return walletId;
   }
@@ -49,29 +53,61 @@ public class Wallet {
     return balance;
   }
 
-  public void deposit(BigDecimal amount) {
-    if (amount == null) {
-      throw new IllegalArgumentException("amount cannot be null");
-    }
+  public List<Transaction> getTransactionHistory() {
+    return List.copyOf(transactionHistory);
+  }
 
+  // Helper for account validation
+  private void validateAmount(BigDecimal amount) {
+    if (amount == null) {
+      throw new IllegalArgumentException("Amount cannot be null");
+    }
     if (amount.compareTo(BigDecimal.ZERO) <= 0) {
       throw new IllegalArgumentException("Amount has to be greater than zero");
     }
-    this.balance = this.balance.add(amount);
   }
 
-  public void withdraw(BigDecimal amount) {
-    if (amount == null) {
-      throw new IllegalArgumentException("withdrawal cannot be null");
-    }
+  // Deposit
+  public void deposit(BigDecimal amount) {
+    validateAmount(amount);
+    this.balance = this.balance.add(amount);
 
-    if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-      throw new IllegalArgumentException("withdrawal should be greater than 0");
-    }
+    Transaction transaction = new Transaction(TransactionType.DEPOSIT, amount);
+    transactionHistory.add(transaction);
+  }
+
+  // Wthdraw
+  public void withdraw(BigDecimal amount) {
+    validateAmount(amount);
 
     if (amount.compareTo(this.balance) > 0) {
       throw new IllegalArgumentException("account balance too low, cannot withdraw");
     }
     this.balance = this.balance.subtract(amount);
+
+    Transaction transaction = new Transaction(TransactionType.WITHDRAWAL, amount);
+    transactionHistory.add(transaction);
+  }
+
+  // TRANSFER: Transfer Out
+  public void transferOut(BigDecimal amount) {
+    validateAmount(amount);
+
+    if (amount.compareTo(this.balance) > 0) {
+      throw new IllegalArgumentException("account balance too low, cannot complete transfer");
+    }
+    this.balance = this.balance.subtract(amount);
+
+    Transaction transaction = new Transaction(TransactionType.TRANSFER, amount);
+    transactionHistory.add(transaction);
+  }
+
+  // TRANSFER: Transfer In
+  public void transferIn(BigDecimal amount) {
+    validateAmount(amount);
+    this.balance = this.balance.add(amount);
+
+    Transaction transaction = new Transaction(TransactionType.TRANSFER, amount);
+    transactionHistory.add(transaction);
   }
 }
