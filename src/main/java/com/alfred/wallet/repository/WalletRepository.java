@@ -1,6 +1,8 @@
 package com.alfred.wallet.repository;
 
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import com.alfred.wallet.model.Wallet;
@@ -22,5 +24,10 @@ public class WalletRepository {
 
   public Optional<Wallet> findById(long walletId) {
     return Optional.ofNullable(wallets.get(walletId));
+  }
+
+  public List<Wallet> findAll() {
+    List<Wallet> allWallets = new ArrayList<>(wallets.values());
+    return allWallets;
   }
 }
