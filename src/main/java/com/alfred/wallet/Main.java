@@ -87,7 +87,6 @@ public class Main {
 
     WalletRepository walletRepo = new WalletRepository();
     walletRepo.save(wallet);
-    walletRepo.save(wallet);
 
     System.out.println(walletRepo.findById(20001));
   }
