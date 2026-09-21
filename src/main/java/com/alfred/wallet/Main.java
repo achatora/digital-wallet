@@ -7,6 +7,7 @@ import com.alfred.wallet.model.Customer;
 import com.alfred.wallet.model.Transaction;
 import com.alfred.wallet.model.Wallet;
 import com.alfred.wallet.service.TransferService;
+import com.alfred.wallet.repository.WalletRepository;
 
 public class Main {
   public static void main(String[] args) {
@@ -83,5 +84,11 @@ public class Main {
           transaction.getAmount(),
           transaction.getTimestamp());
     }
+
+    WalletRepository walletRepo = new WalletRepository();
+    walletRepo.save(wallet);
+    walletRepo.save(wallet);
+
+    System.out.println(walletRepo.findById(20001));
   }
 }
